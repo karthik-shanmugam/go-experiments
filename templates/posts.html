@@ -1,0 +1,16 @@
+<html>
+    <body>
+    <div>
+    <form method="POST">
+    <input type="text" name="name"><br>
+    <input type="text" name="content"><br>
+    <input type="submit">
+    </form>
+    </div>
+    {{range $i, $e := .}}
+    <div>
+      {{.Name}} {{.Content}} {{.Timestamp}}
+    </div>
+    {{end}}
+    </body>
+</html>
