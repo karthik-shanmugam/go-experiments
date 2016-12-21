@@ -2,14 +2,16 @@
     <body>
     <div>
     <form method="POST">
+    Name: <br>
     <input type="text" name="name"><br>
+    Message: <br>
     <input type="text" name="content"><br>
     <input type="submit">
     </form>
     </div>
     {{range $i, $e := .}}
     <div>
-      {{.Name}} {{.Content}} {{.Timestamp}}
+      <h4>{{.Name}}</h4> {{.Content}} <small>{{.Timestamp}}</small>
     </div>
     {{end}}
     </body>
