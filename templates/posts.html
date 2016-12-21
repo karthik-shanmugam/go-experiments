@@ -3,16 +3,17 @@
     <div>
     <form method="POST">
     Name: <br>
-    <input type="text" name="name"><br>
+    <input type="text" name="name" maxlength="15"><br>
     Message: <br>
-    <input type="text" name="content"><br>
+    <textarea name="content" cols="60" rows="3" maxlength="140"></textarea><br>
     <input type="submit">
     </form>
     </div>
     {{range $i, $e := .}}
     <div>
-      <h4>{{.Name}}</h4> {{.Content}} <small style="color:grey;">{{.Timestamp}}</small>
+      <h3>{{.Name}}</h3> <pre>{{.Content}}</pre> <small style="color:grey;">{{.Timestamp}}</small>
     </div>
+    <hr>
     {{end}}
     </body>
 </html>

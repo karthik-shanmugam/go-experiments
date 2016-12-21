@@ -35,7 +35,10 @@ func main() {
     defer db.Close()
     initializePostsTable(db)
 
-    t, _ := template.ParseFiles("templates/posts.html")
+    t, err := template.ParseFiles("templates/posts.html")
+    if err != nil {
+        fmt.Println(err)
+    }
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
         fmt.Println("Handling an http thingy I guess")
@@ -49,7 +52,7 @@ func main() {
         }
     })
     
-    err := http.ListenAndServe(":8080", nil)
+    err = http.ListenAndServe(":8080", nil)
     fmt.Println(err)
 
 }
@@ -64,13 +67,16 @@ func showPosts(w http.ResponseWriter, r *http.Request, db *sql.DB, t *template.T
     for _, p := range posts {
         template_posts = append(template_posts, p.Template())
     }
-    t.Execute(w, template_posts)   
+    err := t.Execute(w, template_posts)
+    if err != nil {
+        fmt.Println(err)
+    }
 }
 
 func makePost(w http.ResponseWriter, r *http.Request, db *sql.DB) {
     name := r.FormValue("name")
     content := r.FormValue("content")
-    if len(name) > 0 && len(content) > 0 {
+    if len(name) > 0 && len(name) <= 15 && len(content) > 0 && len(content) <= 140 {
         addPost(db, &post{name: name, content: content, timestamp: time.Now().Unix()})
     }
 }
