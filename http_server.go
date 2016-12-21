@@ -3,7 +3,6 @@ package main
 import "fmt"
 import "html/template"
 import "net/http"
-// import "math/rand"
 import "database/sql"
 import "log"
 import "time"
@@ -35,13 +34,10 @@ func main() {
     db := openDb("./posts.db")
     defer db.Close()
     initializePostsTable(db)
-    //p := &post{name: "karthik", content: "hello world", timestamp: time.Now().Unix()}
-    // addPost(db, p)
 
     t, _ := template.ParseFiles("templates/posts.html")
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        // w.Write([]byte(fmt.Sprintf("You learned Go in %d minutes!\n", rand.Intn(100))))
         fmt.Println("Handling an http thingy I guess")
         if r.Method == "GET" {
             showPosts(w, r, db, t)
@@ -51,24 +47,17 @@ func main() {
         } else {
             fmt.Fprintf(w, "Invalid HTTP method!\n")
         }
-        // posts := getPosts(db)
-        // template_posts := make([]Template_Post, 0)
-        // for _, p := range posts {
-        //     template_posts = append(template_posts, p.Template())
-        // }
-        // t.Execute(w, template_posts)
-        // for _, p := range posts {
-        //     fmt.Println(p.String())
-        // }
     })
     
     err := http.ListenAndServe(":8080", nil)
     fmt.Println(err)
 
 }
+
 func redirect_home(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/", 303)
 }
+
 func showPosts(w http.ResponseWriter, r *http.Request, db *sql.DB, t *template.Template) {
     posts := getPosts(db)
     template_posts := make([]Template_Post, 0)
@@ -77,6 +66,7 @@ func showPosts(w http.ResponseWriter, r *http.Request, db *sql.DB, t *template.T
     }
     t.Execute(w, template_posts)   
 }
+
 func makePost(w http.ResponseWriter, r *http.Request, db *sql.DB) {
     name := r.FormValue("name")
     content := r.FormValue("content")
@@ -84,8 +74,6 @@ func makePost(w http.ResponseWriter, r *http.Request, db *sql.DB) {
         addPost(db, &post{name: name, content: content, timestamp: time.Now().Unix()})
     }
 }
-
-
 
 func openDb(filename string) (*sql.DB) {
     db, err := sql.Open("sqlite3", filename)
