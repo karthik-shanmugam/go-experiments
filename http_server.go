@@ -7,6 +7,7 @@ import "database/sql"
 import "log"
 import "time"
 import _ "github.com/mattn/go-sqlite3"
+import "os"
 
 type post struct {
     id int
@@ -51,8 +52,13 @@ func main() {
             fmt.Fprintf(w, "Invalid HTTP method!\n")
         }
     })
-    
-    err = http.ListenAndServe(":8080", nil)
+    portstr := ":"
+    if len(os.Args) > 1 {
+        portstr += os.Args[1]
+    } else {
+        portstr += "8080"
+    }
+    err = http.ListenAndServe(portstr, nil)
     fmt.Println(err)
 
 }
