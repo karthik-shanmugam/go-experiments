@@ -112,7 +112,7 @@ func addPost(db *sql.DB, p *post) {
 }
 
 func getPosts(db *sql.DB) ([]post){
-    rows, err := db.Query("select id, name, content, time from posts")
+    rows, err := db.Query("select id, name, content, time from posts order by time desc")
     if err != nil {
         log.Fatal(err)
     }
